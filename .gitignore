@@ -1,0 +1,11 @@
+*.txt
+test/
+build/extension.ane
+build/library.swc
+*.bat
+as3/helper-app.xml
+as3/helper.apk
+as3/helper.fla
+as3/helper.swf
+as3/library.swf
+as3/src/Helper.as

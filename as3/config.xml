@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<flex-config> 
+	<target-player>11.1.0</target-player>
+    <compiler> 
+        <source-path> 
+            <path-element>src</path-element> 
+        </source-path> 
+    </compiler> 
+    <include-classes> 
+        <class>com.gigateam.extensions.usb.UsbExtension</class>
+		<class>com.gigateam.extensions.usb.UsbInterface</class>
+    </include-classes> 
+</flex-config>

@@ -1,0 +1,21 @@
+<extension xmlns="http://ns.adobe.com/air/extension/3.9">
+ <id>com.gigateam.extensions.usb.UsbExtension</id>
+ <versionNumber>1.0</versionNumber>
+ <platforms>
+ <platform name="Android-ARM">
+ <applicationDeployment>
+<nativeLibrary>androidLib.jar</nativeLibrary>
+ <initializer>com.gigateam.extensions.usb.UsbExtension</initializer>
+ </applicationDeployment>
+ </platform>
+ <platform name="Android-x86">
+ <applicationDeployment>
+ <nativeLibrary>androidLib.jar</nativeLibrary>
+ <initializer>com.gigateam.extensions.usb.UsbExtension</initializer>
+ </applicationDeployment>
+ </platform>
+ <platform name="default">
+ <applicationDeployment/>
+ </platform> 
+ </platforms>
+</extension>

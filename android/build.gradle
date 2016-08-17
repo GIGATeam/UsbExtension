@@ -1,0 +1,40 @@
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "20.0.0"
+
+    defaultConfig {
+        //applicationId "com.panor.wifimanager"
+        minSdkVersion 15
+        targetSdkVersion 18
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:19.0.1'
+    compile files('libs/FlashRuntimeExtensions.jar')
+}
+
+task deleteOldJar(type: Delete){
+    delete 'relese/androidLib.jar'
+}
+
+task exportJar(type: Copy){
+    from('build/intermediates/bundles/release/')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar', 'androidLib.jar')
+}
+
+exportJar.dependsOn(deleteOldJar, build)
