@@ -15,6 +15,23 @@
 			vendorId = data[VENDOR_ID];
 			productId = data[PRODUCT_ID];
 		}
+		public static function sieve(devicesOld:Vector.<UsbDevice>, devicesNew:Vector.<UsbDevice>):Vector.<UsbDevice>{
+			var difference:Vector.<UsbDevice> = new Vector.<UsbDevice>();
+			for(var i:int=0;i<devicesNew.length;i++){
+				if(getDeviceByIds(devicesOld, devicesNew[i].productId, devicesNew[i].vendorId)==null){
+					difference.push(devicesNew[i]);
+				}
+			}
+			return difference;
+		}
+		private static function getDeviceByIds(devices:Vector.<UsbDevice>, productId:String, vendorId:String):UsbDevice{
+			for(var i:int=0;i<devices.length;i++){
+				if(devices[i].productId == productId && devices[i].vendorId==vendorId){
+					return devices[i];
+				}
+			}
+			return null;
+		}
 	}
 	
 }

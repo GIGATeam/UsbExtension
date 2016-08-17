@@ -7,11 +7,9 @@
 	
 	public class UsbInterface extends ContextInterface{
 		public static const KEY:String = "USB";
-		public static var staticContext:ExtensionContext;
 		public function UsbInterface(extId:String) {
 			// constructor code
 			super(extId, KEY);
-			staticContext = context;
 		}
 		override public function dispose():void{
 			super.dispose();
@@ -41,7 +39,6 @@
 			callFunc("stopListenFunctionKey");
 		}
 		private function onStatus(e:StatusEvent):void{
-			trace("status");
 			var usbEvent:UsbEvent;
 			var obj:Object = null;
 			switch(e.code){
@@ -60,8 +57,8 @@
 		public function clear():void{
 			callFunc("clearFunctionKey");
 		}
-		public function connect(index:int, type:int):Boolean{
-			return callFuncBool("connectFunctionKey", [index, type]);
+		public function connect(index:int, type:int, baud:int):Boolean{
+			return callFuncBool("connectFunctionKey", [index, type, baud]);
 		}
 		public function write(data:String):void{
 			callFunc("writeFunctionKey", [data]);

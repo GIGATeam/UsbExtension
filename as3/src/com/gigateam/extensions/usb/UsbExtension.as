@@ -8,10 +8,12 @@
 	import com.gigateam.extensions.usb.events.UsbEvent;
 	
 	public class UsbExtension extends EventDispatcher{
+		public static const VERSION:Number = 0.8;
 		private static const extensionID:String = "com.gigateam.extensions.usb.UsbExtension";
 		private static var _instance:UsbExtension;
 		private static var _usbInterface:UsbInterface;
 		private var actionUsbCode:String;
+		private var _devices:Vector.<UsbDevice>;
 		public function UsbExtension() {
 			// constructor code
 			if(_instance!=null){
@@ -68,19 +70,19 @@
 			}
 			return _usbInterface;
 		}
-		public function getDevice(data:Object, flush:Boolean=false):UsbDevice{
+		private function getDevice(data:Object, flush:Boolean=false):UsbDevice{
 			if(data.hasOwnProperty(UsbDevice.PRODUCT_ID)){
 				return getDeviceByIds(data[UsbDevice.PRODUCT_ID], data[UsbDevice.VENDOR_ID], flush);
 			}
 			return null;
 		}
-		public function getAccessory(data:Object, flush:Boolean=false):UsbAccessory{
+		private function getAccessory(data:Object, flush:Boolean=false):UsbAccessory{
 			if(data.hasOwnProperty(UsbEndpoint.HASH_CODE)){
 				return getAccessoryByHashCode(data[UsbEndpoint.HASH_CODE], flush);
 			}
 			return null;
 		}
-		public function getDeviceByIds(productId:String, vendorId:String, flush:Boolean=false):UsbDevice{
+		private function getDeviceByIds(productId:String, vendorId:String, flush:Boolean=false):UsbDevice{
 			var list:Vector.<UsbDevice> = getDevices(flush);
 			for(var i:int=0;i<list.length;i++){
 				if(list[i].productId==productId && list[i].vendorId==vendorId){
@@ -89,7 +91,7 @@
 			}
 			return null;
 		}
-		public function getAccessoryByHashCode(hashCode:int, flush:Boolean=false):UsbAccessory{
+		private function getAccessoryByHashCode(hashCode:int, flush:Boolean=false):UsbAccessory{
 			var list:Vector.<UsbAccessory> = getAccessories(flush);
 			for(var i:int=0;i<list.length;i++){
 				if(list[i].hashCode==hashCode){
@@ -132,8 +134,8 @@
 		public function requestPermission(endpoint:UsbEndpoint):void{
 			usbInterface.reqeustPermission(endpoint);
 		}
-		public function connect(device:UsbDevice):Boolean{
-			return usbInterface.connect(device.index, device.type);
+		public function connect(device:UsbDevice, baud:int):Boolean{
+			return usbInterface.connect(device.index, device.type, baud);
 		}
 		public function write(data:String):void{
 			usbInterface.write(data);
