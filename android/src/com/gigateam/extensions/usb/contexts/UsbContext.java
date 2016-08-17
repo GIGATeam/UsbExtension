@@ -36,7 +36,6 @@ import java.util.Map;
  */
 public class UsbContext extends FREContext implements IContext{
     public static final String ACTION_USB_STATE = "android.hardware.usb.action.USB_STATE";
-    public static final String ACTION_MAIN = "android.intent.action.MAIN";
     public static final String CTX_ID = "USB";
     public static final String USB_TYPE = "PLUGED_USB_TYPE";
     public static final Integer TYPE_DEVICE = 0;
@@ -91,11 +90,6 @@ public class UsbContext extends FREContext implements IContext{
                         usbEvent.set_usbEnd(device);
                         dispatchStatusEventAsync(UsbEvent.USB_DETACHED, usbEvent.toString());
                     }
-                }
-            }else if(ACTION_MAIN.equals(action)){
-                synchronized (this){
-                    usbEvent.endType = TYPE_DEVICE;
-                    dispatchStatusEventAsync(UsbEvent.USB_ATTACHED, usbEvent.toString());
                 }
             }else if(UsbManager.ACTION_USB_DEVICE_ATTACHED.equals(action)){
                 synchronized (this){
@@ -202,7 +196,6 @@ public class UsbContext extends FREContext implements IContext{
         filter.addAction(UsbManager.ACTION_USB_ACCESSORY_ATTACHED);
         filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
         filter.addAction(ACTION_USB_STATE);
-        filter.addAction(ACTION_MAIN);
         filter.addAction(get_actionUsbPermission());
         //
         getActivity().registerReceiver(mUsbReceiver, filter);

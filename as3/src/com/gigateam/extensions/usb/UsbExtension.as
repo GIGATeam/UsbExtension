@@ -12,7 +12,6 @@
 		private static var _instance:UsbExtension;
 		private static var _usbInterface:UsbInterface;
 		private var actionUsbCode:String;
-		public static var debugString:String = "";
 		public function UsbExtension() {
 			// constructor code
 			if(_instance!=null){
@@ -41,7 +40,7 @@
 			return _instance;
 		}
 		public function get isSupported():Boolean{
-			return (Capabilities.cpuArchitecture=="ARM");
+			return (Capabilities.version.indexOf("AND")>=0);
 		}
 		public function dispose():void{
 			_instance = null;
@@ -53,13 +52,8 @@
 			usbInterface.dispose();
 		}
 		private function onEvent(e:UsbEvent):void{
-			trace("event~");
-			debugString = e.rawData;
 			var usbEvent:UsbEvent = new UsbEvent(e.type, e.rawData, e.data);
-			if(e.data==null){
-				debugString = "hoho"
-			}else if(e.data.hasOwnProperty(UsbEvent.END_POINT)){
-				debugString = "heyhey"
+			if(e.data!=null || e.data.hasOwnProperty(UsbEvent.END_POINT)){
 				if(UsbEndpoint.isDevice(e.data[UsbEvent.END_POINT])){
 					usbEvent.endpoint = getDevice(e.data[UsbEvent.END_POINT], true);
 				}else{
@@ -110,7 +104,6 @@
 				usbInterface.clear();
 			}
 			var str:String = usbInterface.getDevices();
-			trace("str", str);
 			var list:Array = JSON.parse(usbInterface.getDevices()) as Array;
 			for(var i:int=0;i<list.length;i++){
 				var device:UsbDevice = new UsbDevice();
@@ -125,8 +118,6 @@
 				usbInterface.clear();
 			}
 			var str:String = usbInterface.getAccessories();
-			trace("str", str);
-			trace("debug",getDebugMessage());
 			var list:Array = JSON.parse(str) as Array;
 			for(var i:int=0;i<list.length;i++){
 				var accessory:UsbAccessory = new UsbAccessory();
@@ -141,17 +132,11 @@
 		public function requestPermission(endpoint:UsbEndpoint):void{
 			usbInterface.reqeustPermission(endpoint);
 		}
-		public function getDebugMessage():String{
-			return usbInterface.getDebugMessage();
-		}
 		public function connect(device:UsbDevice):Boolean{
 			return usbInterface.connect(device.index, device.type);
 		}
 		public function write(data:String):void{
 			usbInterface.write(data);
-		}
-		public function log(logStr:String):void{
-			debugString=logStr+"\n\r"+debugString;
 		}
 	}
 }
